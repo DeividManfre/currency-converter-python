@@ -16,9 +16,7 @@ build/
 logs/
 .pytest_cache/
 .coverage
-htmlcov/
 .coverage.*
-*.db
 *.sqlite3
 *.sqlite
 *.pid
