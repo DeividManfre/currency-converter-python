@@ -21,7 +21,8 @@ def register_user(data: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
 
     if not AuthUtils.is_password_strong(data.password):
-        raise HTTPException(status_code=400, detail="Password does not meet strength requirements")
+        suggestion = AuthUtils.suggest_password()
+        raise HTTPException(status_code=400, detail=f"Password does not meet strength requirements. Suggested password: {suggestion}")
 
     hashed_pw = AuthUtils.hashed_password(data.password)
     user = User(name=data.name, email=data.email, password_hash=hashed_pw)

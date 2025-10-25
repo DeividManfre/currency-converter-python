@@ -9,6 +9,7 @@ class TransactionCreate(BaseModel):
 
 class TransactionResponse(BaseModel):
     id: int
+    name: str
     user_id: int
     from_currency: str
     to_currency: str

@@ -1,10 +1,19 @@
-from passlib.context import CryptContext
-from jose import jwt
+import re
+import secrets
+import string
+
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
 from datetime import datetime, timedelta
+from passlib.context import CryptContext
+
 
 from app.core.config import settings
 
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
 class AuthUtils:
     @staticmethod
@@ -27,11 +36,22 @@ class AuthUtils:
         return encoded_jwt
     
     @staticmethod
+    def get_current_user(token:str = Depends(oauth2_scheme)):
+        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+        email: str = payload.get("sub")
+        if email is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid authentication token",
+            )
+        return email
+
+    @staticmethod
     def is_password_strong(password: str) -> bool:
-        if (len(password) < 8 or
-            not any(c.islower() for c in password) or
-            not any(c.isupper() for c in password) or
-            not any(c.isdigit() for c in password) or
-            not any(c in "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~" for c in password)):
-            return False
-        return True
+        pattern = r"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$"
+        return bool(re.match(pattern, password))
+
+    @staticmethod
+    def suggest_password() -> str:
+        chars = string.ascii_letters + string.digits + "!@#$%^&*()"
+        return ''.join(secrets.choice(chars) for _ in range(12))
