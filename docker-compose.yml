@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: currency_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: manfre2025
+      MYSQL_ROOT_PASSWORD: root123
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  api:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: mysql+pymysql://user:manfre2025@db:3306/currency_db
+      SECRET_KEY: manfre2025
+      ALGORITHM: HS256
+      CURRENCY_API_KEY: your_currency_api_key_here
+      CURRENCY_API_URL: https://api.currencyapi.com/v3/latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  db_data:
+
+networks:
+  currency-net:
+    driver: bridge
