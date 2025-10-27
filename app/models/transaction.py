@@ -7,10 +7,10 @@ class Transaction(base):
     __tablename__ = "transactions"
     
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
+    name = Column(String(100), nullable=False)
     user_id = Column(Integer, nullable=False)
-    from_currency = Column(String, nullable=False)
-    to_currency = Column(String, nullable=False)
+    from_currency = Column(String(3), nullable=False)
+    to_currency = Column(String(3), nullable=False)
     from_value = Column(Float, nullable=False)
     to_value = Column(Float, nullable=False)
     rate = Column(Float, nullable=False)
