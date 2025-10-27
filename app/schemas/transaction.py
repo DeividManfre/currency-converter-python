@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 
 class TransactionCreate(BaseModel):
+    name: str
     user_id: int
     from_currency: str
     to_currency: str
@@ -19,4 +20,4 @@ class TransactionResponse(BaseModel):
     timestamp: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
