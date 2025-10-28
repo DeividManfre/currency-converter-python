@@ -7,7 +7,7 @@ from app.db.init_db import base
 from app.db.database import engine
 from app.api.routes_transactions import router as transaction_router
 from app.api.routes_auth import router as auth_router
-
+from app.api.routes_test import router as test_router
 
 base.metadata.create_all(bind=engine)
 
@@ -24,6 +24,7 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(transaction_router)
+app.include_router(test_router)
 
 def custom_openapi():
     if app.openapi_schema:

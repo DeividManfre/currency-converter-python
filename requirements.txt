@@ -1,28 +1,21 @@
 fastapi==0.120.0
 uvicorn==0.38.0
-
-# ORM e Banco de Dados
 sqlalchemy==2.0.44
 pymysql==1.1.1
 email-validator==2.2.0
-# Validação e Configuração
 pydantic==2.12.3
 pydantic-settings==2.11.0
 python-dotenv==1.1.1
-
-# Autenticação e Segurança
 python-jose==3.3.0
 passlib[argon2]==1.7.4
 bcrypt==4.2.1
-
-# HTTP e API externa
+cryptography==41.0.4
 requests==2.32.3
 httpx==0.28.1
-
-# Logs e utilidades
 loguru==0.7.3
 typing-extensions==4.15.0
 anyio==4.11.0
 starlette==0.48.0
 colorama==0.4.6
-cryptography
+pytest==8.3.3
+httpx==0.28.1
