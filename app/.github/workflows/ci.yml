@@ -1,0 +1,29 @@
+name: CI Pipeline - Currency converter
+
+on:
+  push:
+    branchs: [main, deivid_manfre]
+    pull_request:
+      branchs: [main, deivid_manfre]
+
+jobs:
+  test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        users: actions/Checkout@v4
+
+        with:
+          python-version: "3.10"
+
+      - name: install dependecies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest httpx
+
+      - name: Run Tests
+        run: pytest -v --maxfail=1 --disable-warnings | tee pytest_output.log
+
+      
