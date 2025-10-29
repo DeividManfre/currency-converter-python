@@ -1,130 +1,86 @@
-# 🧪 Desafio Técnico - Backend Python (FastAPI)
+# Currency Converter API
 
-## 💸 Conversor de Moedas
+*Currency Converter API* is a complete backend project built with FastAPI, MySQL, and Docker, including jwt authentication, currency conversion integration, and automated testing with pytest and GitHub Actions
 
-Você deverá implementar uma aplicação que permita a conversão de valores entre moedas, utilizando **Python com FastAPI** no backend. O frontend pode ser opcionalmente implementado em Vue.js ou React.
+## Features
 
-> **Importante:** Caso você não tenha experiência com frontend, a entrega pode ser feita exclusivamente com a API.
+* User registration and login with encrypted passwords
+* JWT token generation and validation
+* Creation, listing, search, and deletion of conversion transactions
+* Integration with an external exchange rate API
+* Automated tests through an internal API endpoint
+* CI/CD pipeline
+* Execution logs automatically saved inside the container (I plan to use S3 with boto to integrate logs with AWS)
 
----
 
-## 📆 Requisitos do Projeto
+## Run Configuration
 
-### ✅ Funcionalidades Principais
-- A API deve permitir a conversão entre pelo menos 4 moedas:
-  - BRL (Real)
-  - USD (Dólar Americano)
-  - EUR (Euro)
-  - JPY (Iene)
+Initialize with Docker:
 
-- As taxas de câmbio devem ser obtidas da API:
-  - https://app.currencyapi.com/
-  - Documentação: https://currencyapi.com/docs
-
-### 🔐 Persistência das Transações
-Cada transação realizada deve ser registrada com as seguintes informações:
-- ID do usuário
-- Moeda de origem e destino
-- Valor de origem
-- Valor convertido
-- Taxa de conversão
-- Data/Hora UTC
-
-### 🔍 Endpoint de Consulta
-- `GET /transactions?userId=123`
-
-#### Exemplo de retorno:
-```json
-{
-  "transactionId": 42,
-  "userId": 123,
-  "fromCurrency": "USD",
-  "toCurrency": "BRL",
-  "fromValue": 100,
-  "toValue": 525.32,
-  "rate": 5.2532,
-  "timestamp": "2024-05-19T18:00:00Z"
-}
+```
+docker compose up --build
 ```
 
-### ❌ Casos de Erro
-Deverão retornar:
-- Código HTTP apropriado
-- Mensagem de erro clara e objetiva
+Swagger URL:
 
----
+```
+http://127.0.0.1:8000/docs/
+```
 
-## 🧪 Testes
-- A aplicação deve conter testes unitários e de integração com `pytest`
+## Endpoint Structure
 
----
+| Method   | Route                | Description                         |
+| -------- | -------------------- | ----------------------------------- |
+| `POST`   | `/auth/register`     | Creates a new user                  |
+| `POST`   | `/auth/login`        | Logs in and returns a JWT           |
+| `POST`   | `/transactions/`     | Creates a new transaction           |
+| `GET`    | `/transactions/{id}` | Retrieves a transaction by ID       |
+| `GET`    | `/transactions/`     | Lists all user transactions         |
+| `DELETE` | `/transactions/{id}` | Deletes a transaction               |
+| `POST`   | `/test/run`          | Runs automated tests inside the API |
 
-## 📄 README.md
-Deve conter:
-- Instruções para executar o projeto
-- Explicação do propósito
-- Principais decisões de arquitetura
-- Organização das camadas (ex: routers, services, repositories, models)
-- O conteúdo deve estar todo em inglês
+## CI/CD
 
----
+The CI workflow:
 
-## 🧰 Itens Desejáveis (Diferenciais)
-- Logs estruturados (ex: `loguru`, `structlog`)
-- Tratamento de exceções com middlewares
-- Documentação automática (Swagger já embutido no FastAPI)
-- Linter (ex: `ruff`, `black`, `flake8`)
-- Deploy funcional (ex: Render, Railway, Fly.io)
-- CI/CD com GitHub Actions
+* Installs dependencies
+* Initializes the database
+* Runs tests with pytest
 
-### Frontend (opcional)
-- Vue.js 3 + TypeScript ou React + TypeScript
-- TailwindCSS
-- Axios
-- Testes com Cypress, RTL ou Vitest
+## Security
 
----
+* Passwords hashed with bcrypt
+* JWT with expiration time
+* Sensitive variables managed through env or docker-compose
 
-## 🚀 Tecnologias Esperadas
+## Currency API
 
-### Backend
-- Python 3.10+
-- FastAPI
-- SQLAlchemy 2.x ou Tortoise ORM
-- PostgreSQL ou SQLite
-- Pytest
+URL to generate your authentication key (usage limit applies):
 
----
+```
+https://app.currencyapi.com/login
+```
 
-## ⭐ Perfil Desejado
-- Boas práticas REST
-- Arquitetura limpa e escalável
-- Conhecimentos em AWS são diferenciais
-- Experiência com CI/CD
-- Boa comunicação e clareza de código
+## Usage Flow via Swagger for Testing
 
----
+[![MID Preview](mid/pytest_ultra.gif)]
 
-## 📋 Entrega
+## Sources Used
 
-Para padronizar a entrega e facilitar a análise:
+FastAPI — https://fastapi.tiangolo.com/ 
+SQLAlchemy — https://docs.sqlalchemy.org/ 
+Docker — https://docs.docker.com/ 
+GitHub Actions — https://docs.github.com/actions 
+Pydantic — https://pydantic-docs.helpmanual.io/
+HTTPX — https://www.python-httpx.org/ 
+pytest — https://docs.pytest.org/en/stable/contents.html 
+MySQL — https://dev.mysql.com/ 
+Uvicorn — https://www.uvicorn.org/ 
+Docker Compose — https://github.com/docker/compose
 
-1. Faça um **fork deste repositório** para sua conta pessoal do GitHub.
-2. Crie uma **branch com seu nome em snake_case** (exemplo: `joao_silva_souza`).
-3. Suba sua solução utilizando **commits organizados e descritivos**.
-4. Após finalizar:
-   - Certifique-se de que o repositório esteja **público**
-   - Envie o link do seu fork para nossa equipe com:
-     - **Título:** `Entrega - joao_silva_souza`
-     - **Descrição:** Nome completo, data da entrega e quaisquer observações que julgar relevantes.
+## Notes
 
-> ✅ **Dica**: Você pode incluir um arquivo `THOUGHTS.md` com decisões técnicas, ideias descartadas e sugestões de melhoria.
+Even though this project has a solid structure and flow, it was built with an educational purpose — to demonstrate my understanding of architecture, integration of technologies, and backend engineering. It does not represent a production system, but I aimed to get as close as possible due to my strong interest in the position.If you notice any areas for improvement, please let me know — I’m constantly learning.
+It’s also worth mentioning that I used as little autocomplete as possible (honesty builds trust).
 
----
-
-## 📢 Considerações Finais
-- Cite alternativas gratuitas caso use serviços pagos
-- Clareza, boas práticas e organização serão avaliadas
-- Pode adicionar um `THOUGHTS.md` com decisões técnicas e observações
-
-Boa sorte! 🚀
+**Thank you in advance!**
