@@ -62,6 +62,7 @@ https://app.currencyapi.com/login
 ```
 
 ## Usage Flow via Swagger for Testing
+***obs*** The video will only appear in the local repository.
 
 [![MID Preview](mid/pytest_ultra.gif)]
 
