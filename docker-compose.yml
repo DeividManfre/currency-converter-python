@@ -27,7 +27,8 @@ services:
       DATABASE_URL: mysql+pymysql://user:manfre2025@db:3306/currency_db
       SECRET_KEY: manfre2025
       ALGORITHM: HS256
-      CURRENCY_API_KEY: your_currency_api_key_here
+      ACCESS_TOKEN_EXPIRE_MINUTES: 60
+      CURRENCY_API_KEY: your_api_key
       CURRENCY_API_URL: https://api.currencyapi.com/v3/latest
     ports:
       - "8000:8000"
